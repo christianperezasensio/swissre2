@@ -1,0 +1,9 @@
+QTY, FOC, Description, Unit Price, Total
+1, 0, orange juice, 3.95, 3.95
+1, 0, large coffee, 3.50, 3.50
+1, 0, medium coffee, 3.00, 3.00
+1, 1, foamed milk, 0.50, 0.00
+1, 1, extra milk, 0.30, 0.00
+1, 0, bacon roll, 4.50, 4.50
+1, 0, bacon roll, 4.50, 4.50
+TOTAL 19.45 CHF

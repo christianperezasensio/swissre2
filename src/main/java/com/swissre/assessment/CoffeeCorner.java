@@ -37,7 +37,7 @@ public class CoffeeCorner {
         }
     }
 
-    private static Items parseInput(String[] input) {
+    protected static Items parseInput(String[] input) {
         List<Beverage> beverages = new ArrayList<>();
         List<Extra> extras = new ArrayList<>();
         List<Snack> snacks = new ArrayList<>();
@@ -66,7 +66,7 @@ public class CoffeeCorner {
         return items;
     }
 
-    private static void applyDiscounts(Items items) {
+    protected static void applyDiscounts(Items items) {
         items.getBeverages().sort(Comparator.comparing(Beverage::getPrice).reversed());
         items.getExtras().sort(Comparator.comparing(Extra::getPrice).reversed());
         stampDiscount(items);
@@ -86,7 +86,7 @@ public class CoffeeCorner {
         }
     }
 
-    public static String calculateReceipt(Items items) {
+    protected static String calculateReceipt(Items items) {
         StringBuilder stringBuilder = new StringBuilder();
         saveHeader(stringBuilder);
 
