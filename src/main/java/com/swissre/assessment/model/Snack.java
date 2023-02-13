@@ -14,11 +14,11 @@ public enum Snack {
         this.price = price;
     }
 
-    private String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    private BigDecimal getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 }
