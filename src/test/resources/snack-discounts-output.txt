@@ -4,6 +4,5 @@ QTY, FOC, Description, Unit Price, Total
 1, 0, medium coffee, 3.00, 3.00
 1, 1, foamed milk, 0.50, 0.00
 1, 1, extra milk, 0.30, 0.00
-1, 0, bacon roll, 4.50, 4.50
-1, 0, bacon roll, 4.50, 4.50
+2, 0, bacon roll, 4.50, 9.00
 TOTAL 19.45 CHF

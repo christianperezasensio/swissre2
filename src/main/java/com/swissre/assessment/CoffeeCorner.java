@@ -22,33 +22,33 @@ public class CoffeeCorner {
     private static final String STAMP_CARD_MATCHER = "stamp card ";
 
     public static void main(String[] args) {
+        Items items;
+
         //One example in case it is not compiled with javac
         if (args.length == 0) {
             String[] input = {"large coffee with extra milk, small coffee with special roast, bacon roll, orange juice, stamp card 5"};
-            Items items = parseInput(input);
-            applyDiscounts(items);
-            String result = calculateReceipt(items);
-            System.out.println(result);
+            items = parseInput(input);
         } else {
-            Items items = parseInput(args);
-            applyDiscounts(items);
-            String result = calculateReceipt(items);
-            System.out.println(result);
+            items = parseInput(args);
         }
+
+        applyDiscounts(items);
+        String result = calculateReceipt(items);
+        System.out.println(result);
     }
 
     protected static Items parseInput(String[] input) {
         List<Beverage> beverages = new ArrayList<>();
         List<Extra> extras = new ArrayList<>();
         List<Snack> snacks = new ArrayList<>();
-        Items items = new Items(beverages, extras, snacks, 0);
+        Items items = new Items(beverages, extras, snacks);
 
         Arrays.stream(input).forEach(s -> {
             String[] itemArray = s.split(COMMA_DELIMITER);
             Arrays.stream(itemArray).forEach(s1 -> {
                 if (s1.contains(STAMP_CARD_MATCHER)) {
-                    String stamps2 = s1.substring(STAMP_CARD_MATCHER.length());
-                    items.setStamps(Integer.parseInt(stamps2));
+                    String stamps = s1.substring(STAMP_CARD_MATCHER.length());
+                    items.setStamps(Integer.parseInt(stamps));
                 } else if (s1.equals("bacon roll")) {
                     snacks.add(BACON_ROLL);
                 } else {
@@ -75,14 +75,14 @@ public class CoffeeCorner {
 
     private static void stampDiscount(Items items) {
         if (items.getStamps() == 5) {
-            items.getBeverages().stream().findFirst().ifPresent(beverage -> beverage.setDiscount(true));
+            items.getBeverages().stream().findFirst().ifPresent(beverage -> items.setBeverageDiscounts(1));
         }
     }
 
     private static void snackDiscount(Items items) {
-        int discountedExtras = items.getSnacks().size() - items.getBeverages().size();
+        int discountedExtras = items.getSnacks().size();
         if (discountedExtras > 0) {
-            IntStream.range(0, discountedExtras).forEach(i -> items.getExtras().get(i).setDiscount(true));
+            IntStream.range(0, discountedExtras).forEach(i -> items.setExtrasDiscounts(items.getExtrasDiscounts() + 1));
         }
     }
 
@@ -103,8 +103,9 @@ public class CoffeeCorner {
 
             if (newDescription.equals(description)) {
                 quantity++;
-                if (beverage.isDiscount()) {
+                if (items.getBeverageDiscounts() > 0) {
                     freeOfCharge++;
+                    items.setBeverageDiscounts(items.getBeverageDiscounts() - 1);
                 } else {
                     total = total.add(beverage.getPrice());
                 }
@@ -118,8 +119,9 @@ public class CoffeeCorner {
                 description = beverage.getDescription();
                 unitPrice = beverage.getPrice();
 
-                if (beverage.isDiscount()) {
+                if (items.getBeverageDiscounts() > 0) {
                     freeOfCharge = 1;
+                    items.setBeverageDiscounts(items.getBeverageDiscounts() - 1);
                     total = new BigDecimal("0.00");
                 } else {
                     freeOfCharge = 0;
@@ -133,8 +135,9 @@ public class CoffeeCorner {
 
             if (newDescription.equals(description)) {
                 quantity++;
-                if (extra.isDiscount()) {
+                if (items.getExtrasDiscounts() > 0) {
                     freeOfCharge++;
+                    items.setExtrasDiscounts(items.getExtrasDiscounts() - 1);
                 } else {
                     total = total.add(extra.getPrice());
                 }
@@ -146,8 +149,9 @@ public class CoffeeCorner {
                 description = extra.getDescription();
                 unitPrice = extra.getPrice();
 
-                if (extra.isDiscount()) {
+                if (items.getExtrasDiscounts() > 0) {
                     freeOfCharge = 1;
+                    items.setExtrasDiscounts(items.getExtrasDiscounts() - 1);
                     total = new BigDecimal("0.00");
                 } else {
                     freeOfCharge = 0;
@@ -169,6 +173,7 @@ public class CoffeeCorner {
                 quantity = 1;
                 description = snack.getDescription();
                 unitPrice = snack.getPrice();
+                freeOfCharge = 0;
                 total = snack.getPrice();
             }
         }

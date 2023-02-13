@@ -5,18 +5,16 @@ import java.util.Arrays;
 
 public enum Extra {
 
-    MILK("extra milk", new BigDecimal("0.30"), false),
-    FOAMED_MILK("foamed milk", new BigDecimal("0.50"), false),
-    SPECIAL_ROAST_COFFEE("special roast", new BigDecimal("0.90"), false);
+    MILK("extra milk", new BigDecimal("0.30")),
+    FOAMED_MILK("foamed milk", new BigDecimal("0.50")),
+    SPECIAL_ROAST_COFFEE("special roast", new BigDecimal("0.90"));
 
     private final String description;
     private final BigDecimal price;
-    private boolean discount;
 
-    Extra(String description, BigDecimal price, boolean discount) {
+    Extra(String description, BigDecimal price) {
         this.description = description;
         this.price = price;
-        this.discount = discount;
     }
 
     public String getDescription() {
@@ -25,14 +23,6 @@ public enum Extra {
 
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public boolean isDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(boolean discount) {
-        this.discount = discount;
     }
 
     public static Extra fromString(String text) {
